@@ -1,55 +1,29 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import math
-
-# Load the dataset
-url = "https://raw.githubusercontent.com/s3tch2t/linear-regression/main/CarPrice_Assignment.csv"
-data = pd.read_csv(url)
-
-# Extracting the relevant features and target
-X = data[['horsepower']]
-y = data['price']
-
-# Normalize the features (mean normalization)
-X = (X - X.mean()) / X.std()
-
-# Hyperparameters
-learning_rate = 0.01
-num_epochs = 1000
-
-# Initialize the weights and bias
-w = 0
-b = 0
-
-# Lists to store the loss and epoch values
-losses = []
-
-# Training the linear regression model
-for epoch in range(num_epochs):
-    # Predict the values
-    y_pred = w * X + b
-    
-    # Calculate the mean squared error loss
-    loss = np.mean((y_pred - y) ** 2)
-    losses.append(loss)
-    
-    # Compute the gradients
-    dw = (1/len(X)) * np.sum((y_pred - y) * X)
-    db = (1/len(X)) * np.sum(y_pred - y)
-    
-    # Update the weights and bias
-    w -= learning_rate * dw
-    b -= learning_rate * db
-
-# Plot the loss vs. epoch graph
-plt.figure(figsize=(10, 6))
-plt.plot(range(num_epochs), losses)
-plt.xlabel('Epoch')
-plt.ylabel('Loss')
-plt.title('Loss vs. Epoch')
-plt.show()
-
-# Print the final weight and bias
-print("Final weight (w):", w)
-print("Final bias (b):", b)
+import pandas as pd
+df = pd.read_csv("https://github.com/s3tch2t/linear-regression/blob/main/CarPrice_Assignment.csv")
+class LinearRegression:
+   def fit(self,X,Y):
+       X=np.array(X).reshape(-1,1)
+       Y=np.array(Y).reshape(-1,1)
+       
+       x_shape = X.shape
+       
+       num_var = x_shape[1]
+       horsepower_matrix = np.random.normal(0,1,(num_var,1))
+       intercept = np.random.rand(1)
+       for i in range(50):
+           dcostdm = np.sum(np.multiply(((np.matmul(X,horsepower_matrix)+intercept)-Y),X))*2/x_shape[0]
+           dcostdc = np.sum(((np.matmul(X,horsepower_matrix)+intercept)-Y))*2/x_shape[0]
+           horsepower_matrix -= 0.1*dcostdm
+           intercept -= 0.1*dcostdc
+       return weight_matrix,intercept
+#print(df.drop(['Gender'],axis=1))
+reg = LinearRegression()
+x = (df['horsepower']-df['horsepower'].mean())/df['horsepower'].std()
+y = (df["price"]-df['price'].mean())/df["price"].std()
+params = reg.fit(x,y)
+plt.scatter(x[:180],y[:180])
+pred = np.matmul(np.array(x[:180]).reshape(-1,1),params[0])+params[1]
+plt.plot(x[:180],pred)
+print(params)
