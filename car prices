@@ -17,8 +17,8 @@ class LinearRegression:
            dcostdc = np.sum(((np.matmul(X,horsepower_matrix)+intercept)-Y))*2/x_shape[0]
            horsepower_matrix -= 0.1*dcostdm
            intercept -= 0.1*dcostdc
-       return weight_matrix,intercept
-#print(df.drop(['Gender'],axis=1))
+       return horsepower_matrix,intercept
+#print(df.drop(['CarName','fueltype','aspiration','doornumber','carbody','drivewheel','enginelocation','wheelbase','carlength','carwidth','carheight','curbweight','enginetype','cylindernumber','enginesize','fuelsystem','boreratio','stroke','compressionratio'],axis=1))
 reg = LinearRegression()
 x = (df['horsepower']-df['horsepower'].mean())/df['horsepower'].std()
 y = (df["price"]-df['price'].mean())/df["price"].std()
